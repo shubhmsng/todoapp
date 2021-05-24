@@ -1,23 +1,36 @@
-import logo from './logo.svg';
+import { useState, useRef } from 'react';
+import TodoItem from './TodoItem';
 import './App.css';
 
 function App() {
+  const [todo, setTodo] = useState([]);
+  const textbox = useRef(null);
+
+  const addNewTodo = () => {
+    if(textbox.current.value) {
+      let new_todo = [...todo];
+      new_todo.push(textbox.current.value);
+      setTodo(new_todo);
+      textbox.current.value = "";
+    }
+  }
+  
+  const removeTodo = name => {
+    if(name) {
+      let new_todo = [...todo];
+      new_todo = new_todo.filter(val => val !== name);
+      setTodo(new_todo);
+    }
+  }
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 className="title">To Do App</h1>
+      <div className="App">
+        <input type="text" className="todo-textbox" placeholder="Add todo" ref={textbox}></input>
+        <button type="button" className="add-btn" onClick={addNewTodo}>Add</button>
+      </div>
+      <TodoItem todo={todo} removeTodo={removeTodo}/>
     </div>
   );
 }
