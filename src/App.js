@@ -1,16 +1,17 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import './App.css';
 
 let count1 = 0;
 let count2 = 0;
+let count3 = 0;
 
 function App() {
   const [todo, setTodo] = useState([]);
   const [todoName, setTodoName] = useState("");
 
   const addNewTodo = useCallback(() => {
-    console.log("count1", ++count1);
+    console.log("Tasks Added count", ++count1);
     if(todoName) {
       let new_todo = [...todo];
       new_todo.push(todoName);
@@ -20,7 +21,7 @@ function App() {
   } , [todo, todoName]);
 
   // const addNewTodo = () => {
-  //   console.log("count1", ++count1);
+  //   console.log("Tasks Added count", ++count1);
   //   if(todoName) {
   //     let new_todo = [...todo];
   //     new_todo.push(todoName);
@@ -30,7 +31,7 @@ function App() {
   // }
   
   const removeTodo = useMemo(() => name => {
-    console.log("count2", ++count2);
+    console.log("Tasks removed count", ++count2);
     if(name) {
       let new_todo = [...todo];
       new_todo = new_todo.filter(val => val !== name);
@@ -39,13 +40,27 @@ function App() {
   }, [todo]);
 
   // const removeTodo = (name) => {
-  //   console.log("count2", ++count2);
+  //   console.log("Tasks removed count", ++count2);
   //   if(name) {
   //     let new_todo = [...todo];
   //     new_todo = new_todo.filter(val => val !== name);
   //     setTodo(new_todo);
   //   }
   // }
+
+  useEffect(() => {
+    console.log("used effect was called", ++count3, "times");
+    if(!todo.length && count1) {
+      alert('All Tasks completed');
+    }
+  }, [todo]);
+
+  // useEffect(() => {
+  //   console.log("used effect was called", ++count3, "times");
+  //   if(!todo.length && count1) {
+  //     alert('All Tasks completed');
+  //   }
+  // });
 
   const updateText = (e) => {
     setTodoName(e.target.value);
